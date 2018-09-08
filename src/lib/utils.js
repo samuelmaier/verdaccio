@@ -12,7 +12,7 @@ import {
   HTTP_STATUS,
   API_ERROR,
   DEFAULT_PORT,
-  DEFAULT_DOMAIN,
+  DEFAULT_DOMAIN, DEFAULT_PROTOCOL,
 } from './constants';
 import {generateGravatarUrl} from '../utils/user';
 
@@ -266,7 +266,7 @@ function parse_address(urlAddress: any) {
 
   if (urlPattern) {
     return {
-      proto: urlPattern[2] || 'http',
+      proto: urlPattern[2] || DEFAULT_PROTOCOL,
       host: urlPattern[6] || urlPattern[7] || DEFAULT_DOMAIN,
       port: urlPattern[8] || DEFAULT_PORT,
     };
@@ -276,7 +276,7 @@ function parse_address(urlAddress: any) {
 
   if (urlPattern) {
     return {
-      proto: urlPattern[2] || 'http',
+      proto: urlPattern[2] || DEFAULT_PROTOCOL,
       path: urlPattern[4],
     };
   }
@@ -390,11 +390,11 @@ const getLatestVersion = function(pkgInfo: Package) {
 };
 
 const ErrorCode = {
-  getConflict: (message: string = 'this package is already present') => {
+  getConflict: (message: string = API_ERROR.PACKAGE_EXIST) => {
     return createError(HTTP_STATUS.CONFLICT, message);
   },
   getBadData: (customMessage?: string) => {
-    return createError(HTTP_STATUS.BAD_DATA, customMessage || 'bad data');
+    return createError(HTTP_STATUS.BAD_DATA, customMessage || API_ERROR.BAD_DATA);
   },
   getBadRequest: (customMessage?: string) => {
     return createError(HTTP_STATUS.BAD_REQUEST, customMessage);
